@@ -12,8 +12,10 @@ module.exports = (options) => {
   // TODO: Include routes for:
   // 1. Retrieving orders from current logged-in customer
   // 2. Creating a new order (only customers can create new orders)
-  app.route('/orders/:orderId/create')
-    .patch(
+  app.route('/orders')
+    .get(
+      OrderController.indexCustomer)
+    .post(
       upload.none(),
       middlewares.isLoggedIn,
       middlewares.hasRole('customer'),

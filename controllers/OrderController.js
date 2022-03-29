@@ -94,7 +94,19 @@ exports.indexRestaurant = async function (req, res) {
 // Orders have to include products that belongs to each order and restaurant details
 // sort them by createdAt date, desc.
 exports.indexCustomer = async function (req, res) {
+  try {
+    const orders = await Order.findAll(
+      {
+        attributes: ['id', 'startedAt', 'sentAt', 'delivererAt', 'price', 'address', 'shippingCosts', 'restaurantId', 'userId', 'createdAt', 'updateAt'],
+        where: { userId: req.user.id },
 
+        order: [['createdAt', 'DSC']]
+
+      })
+    res.json(orders)
+  } catch (err) {
+    res.status(500).send(err)
+  }
 }
 
 // TODO: Implement the create function that receives a new order and store it at the database.
