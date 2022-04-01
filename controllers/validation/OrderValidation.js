@@ -1,5 +1,6 @@
 const { check } = require('express-validator')
 const models = require('../../models')
+const order = require('../../models/order')
 const Order = models.Order
 
 module.exports = {
@@ -7,13 +8,35 @@ module.exports = {
     return [
       check('products')
         .custom((value, { req }) => {
-          // TODO: Check that the order includes some products (at least one) and each product quantity is greater than 0
-
-        })
-        .withMessage('Order should have products, and all of them with quantity greater than zero'),
+          try {
+            const order = Order.findByPk(req.params.orderId,
+{
+                attributes: ['quantity']
+              })
+              if (order.quatity=0) {
+                return Promise.reject(new Error('Order should have products, and all of them with quantity greater than zero'))
+              } else {
+                return Promise.resolve('ok')
+              }
+            } catch (err) {
+              return Promise.reject(err)
+            }
+          }),
       check('products')
         .custom(async (value, { req }) => {
-          // TODO: Check that productsIds are valid (they exists in the database), and every product belongs to the restaurant of the order
+          try {
+            const order = await Order.findByPk(req.params.orderId,
+              {
+                attributes: ['productsId']
+              })
+            if (order.productsId) {
+              return Promise.reject(new Error('The products doesn`t exist in the database.'))
+            } else {
+              return Promise.resolve('ok')
+            }
+          } catch (err) {
+            return Promise.reject(err)
+          }
         })
     ]
   },

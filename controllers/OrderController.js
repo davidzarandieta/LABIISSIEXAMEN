@@ -97,7 +97,7 @@ exports.indexCustomer = async function (req, res) {
   try {
     const orders = await Order.findAll(
       {
-        attributes: ['id', 'startedAt', 'sentAt', 'delivererAt', 'price', 'address', 'shippingCosts', 'restaurantId', 'userId', 'createdAt', 'updateAt'],
+        attributes: ['id', 'startedAt', 'sentAt', 'deliveredAt', 'price', 'address', 'shippingCosts', 'restaurantId', 'userId', 'createdAt', 'updateAt'],
         where: { userId: req.user.id },
 
         order: [['createdAt', 'DSC']]
@@ -117,7 +117,23 @@ exports.indexCustomer = async function (req, res) {
 // 4. In order to save the order and related products, start a transaction, store the order, store each product linea and commit the transaction
 // 5. If an exception is raised, catch it and rollback the transaction
 exports.create = async function (req, res) {
+  const err = validationResult(req)
 
+  if (err.errors.length > 0) {
+    res.status(422).send(err)
+  } else {
+    let newOrder = Order.build(req.body)
+    try {
+      newOrder = await newOrder.save()
+      res.json(newOrder)
+    } catch (err) {
+      if (err.name.includes('ValidationError')) {
+        res.status(422).send(err)
+      } else {
+        res.status(500).send(err)
+      }
+    }
+  }
 }
 
 exports.confirm = async function (req, res) {
