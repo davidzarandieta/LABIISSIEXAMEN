@@ -117,7 +117,19 @@ exports.indexCustomer = async function (req, res) {
 // 4. In order to save the order and related products, start a transaction, store the order, store each product linea and commit the transaction
 // 5. If an exception is raised, catch it and rollback the transaction
 exports.create = async function (req, res) {
+  const err = validationResult(req)
 
+  if (err.errors.length > 0) {
+    res.status(422).send(err)
+  } else {
+    const newOrder = Order.build(req.body)
+    if (newOrder.price > 10) {
+      newOrder.shippingCost = 0
+    }
+    if (newOrder.price <= 10) {
+      newOrder.price = newOrder.price + newOrder.shippingCost
+    }
+  }
 }
 
 exports.confirm = async function (req, res) {
