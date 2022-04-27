@@ -14,6 +14,8 @@ module.exports = (options) => {
   // 2. Creating a new order (only customers can create new orders)
   app.route('/orders')
     .get(
+      middlewares.isLoggedIn,
+      middlewares.hasRole('customer'),
       OrderController.indexCustomer)
     .post(
       upload.none(),

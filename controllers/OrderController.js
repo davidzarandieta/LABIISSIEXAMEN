@@ -96,12 +96,11 @@ exports.indexRestaurant = async function (req, res) {
 exports.indexCustomer = async function (req, res) {
   try {
     const orders = await Order.findAll(
+
       {
-        attributes: ['id', 'startedAt', 'sentAt', 'deliveredAt', 'price', 'address', 'shippingCosts', 'restaurantId', 'userId', 'createdAt', 'updateAt'],
+        attributes: ['id', 'startedAt', 'sentAt', 'deliveredAt', 'price', 'address', 'shippingCosts', 'restaurantId', 'userId', 'createdAt'],
         where: { userId: req.user.id },
-
-        order: [['createdAt', 'DSC']]
-
+        order: [['createdAt', 'DESC']],
       })
     res.json(orders)
   } catch (err) {
@@ -122,25 +121,22 @@ exports.create = async function (req, res) {
   if (err.errors.length > 0) {
     res.status(422).send(err)
   } else {
-<<<<<<< HEAD
     const newOrder = Order.build(req.body)
     if (newOrder.price > 10) {
       newOrder.shippingCost = 0
     }
     if (newOrder.price <= 10) {
       newOrder.price = newOrder.price + newOrder.shippingCost
-=======
-    let newOrder = Order.build(req.body)
+    }
     try {
-      newOrder = await newOrder.save()
-      res.json(newOrder)
+      const order = await order.save()
+      res.json(order)
     } catch (err) {
       if (err.name.includes('ValidationError')) {
         res.status(422).send(err)
       } else {
         res.status(500).send(err)
       }
->>>>>>> e484653f4573039d0993b0ccfbf2bdf0019319aa
     }
   }
 }
