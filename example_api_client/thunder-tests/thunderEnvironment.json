@@ -5,7 +5,7 @@
     "default": true,
     "sortNum": 10000,
     "created": "2021-07-24T16:26:46.306Z",
-    "modified": "2022-04-26T18:58:30.540Z",
+    "modified": "2022-04-27T11:27:42.134Z",
     "data": [
       {
         "name": "base_url",
@@ -13,11 +13,11 @@
       },
       {
         "name": "token",
-        "value": "04fa2cee061e9fa158313bd55081363a9b6445cc"
+        "value": "6bf5d8011be92c09397462d23ae566b3985957ff"
       },
       {
         "name": "last_created_restaurant",
-        "value": "10"
+        "value": "13"
       },
       {
         "name": "last_created_order",
@@ -29,11 +29,11 @@
       },
       {
         "name": "customerToken",
-        "value": "9d671f05072331b5ef67e8c48f252a75d46c1f6a"
+        "value": "129fd43cfbfa864f01d19cc75bb94d03a22d8f07"
       },
       {
         "name": "customerEmail",
-        "value": "Corkery.fc3e3df3d3cc@thunderclient.com"
+        "value": "Bode.75715dbc6016@gmail.com"
       },
       {
         "name": "customerPassword",
@@ -45,11 +45,11 @@
       },
       {
         "name": "customerId",
-        "value": 6
+        "value": "5"
       },
       {
         "name": "ownerToken",
-        "value": "f8c52cdb379e9b41514a969e8b8b0f13f0235df0"
+        "value": "3562d27277d10ce101d727f747bf5d6c568db43e"
       }
     ]
   }

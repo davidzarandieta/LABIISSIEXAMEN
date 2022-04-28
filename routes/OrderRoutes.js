@@ -21,7 +21,6 @@ module.exports = (options) => {
       upload.none(),
       middlewares.isLoggedIn,
       middlewares.hasRole('customer'),
-      middlewares.checkOrderCustomer,
       OrderValidation.create(),
       OrderController.create)
 

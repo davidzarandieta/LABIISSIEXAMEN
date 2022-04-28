@@ -122,14 +122,9 @@ exports.create = async function (req, res) {
     res.status(422).send(err)
   } else {
     const newOrder = Order.build(req.body)
-    if (newOrder.price > 10) {
-      newOrder.shippingCost = 0
-    }
-    if (newOrder.price <= 10) {
-      newOrder.price = newOrder.price + newOrder.shippingCost
-    }
-    try {
-      const order = await order.save()
+    
+  try {
+      const order = await newOrder.save()
       res.json(order)
     } catch (err) {
       if (err.name.includes('ValidationError')) {
