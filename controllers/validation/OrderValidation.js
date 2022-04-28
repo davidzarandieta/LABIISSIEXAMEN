@@ -8,35 +8,13 @@ module.exports = {
     return [
       check('products')
         .custom((value, { req }) => {
-          try {
-            const order = Order.findByPk(req.params.orderId,
-{
-                attributes: ['quantity']
-              })
-              if (order.quatity=0) {
-                return Promise.reject(new Error('Order should have products, and all of them with quantity greater than zero'))
-              } else {
-                return Promise.resolve('ok')
-              }
-            } catch (err) {
-              return Promise.reject(err)
-            }
-          }),
+          
+         
+        })
+        .withMessage('Order should have products, and all of them with quantity greater than zero'),
       check('products')
         .custom(async (value, { req }) => {
-          try {
-            const order = await Order.findByPk(req.params.orderId,
-              {
-                attributes: ['productsId']
-              })
-            if (order.productsId) {
-              return Promise.reject(new Error('The products doesn`t exist in the database.'))
-            } else {
-              return Promise.resolve('ok')
-            }
-          } catch (err) {
-            return Promise.reject(err)
-          }
+         
         })
     ]
   },
