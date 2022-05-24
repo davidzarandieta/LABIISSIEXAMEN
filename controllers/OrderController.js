@@ -96,14 +96,30 @@ exports.indexRestaurant = async function (req, res) {
 exports.indexCustomer = async function (req, res) {
   try {
     const orders = await Order.findAll(
-
       {
-        attributes: ['id', 'startedAt', 'sentAt', 'deliveredAt', 'price', 'address', 'shippingCosts', 'restaurantId', 'userId', 'createdAt'],
+        attributes: ['id', 'startedAt', 'sentAt', 'deliveredAt', 'price', 'address', 'shippingCosts', 'restaurantId', 'userId', 'createdAt', 'updatedAt'],
         where: { userId: req.user.id },
-        order: [['createdAt', 'DESC']],
+        include:
+      [{
+        model: Restaurant,
+        as: 'restaurant',
+        attributes: ['id', 'name', 'description', 'address', 'postalCode', 'url', 'shippingCosts', 'averageServiceMinutes', 'email', 'phone', 'logo', 'heroImage', 'status', 'restaurantCategoryId'],
+        include:
+      {
+        model: RestaurantCategory,
+        as: 'restaurantCategory'
+      }
+      },
+      {
+        model: Product,
+        as: 'products',
+        attributes: ['id', 'name', 'description', 'price', 'image', 'order', 'availability']
+      }
+      ]
       })
     res.json(orders)
   } catch (err) {
+    console.log(err)
     res.status(500).send(err)
   }
 }
@@ -117,24 +133,64 @@ exports.indexCustomer = async function (req, res) {
 // 5. If an exception is raised, catch it and rollback the transaction
 exports.create = async function (req, res) {
   const err = validationResult(req)
-
   if (err.errors.length > 0) {
     res.status(422).send(err)
   } else {
-    const newOrder = Order.build(req.body)
-    
-  try {
-      const order = await newOrder.save()
-      res.json(order)
-    } catch (err) {
-      if (err.name.includes('ValidationError')) {
-        res.status(422).send(err)
-      } else {
-        res.status(500).send(err)
+    const t = await Order.sequelize.transaction()
+    try {
+      let newOrder = Order.build(req.body)
+      newOrder.userId = req.user.id
+      newOrder.startedAt = null
+      newOrder.sentAt = null
+      let coste = 0
+      for (let i = 0; i < req.body.products.length; i++) {
+        const producto = await Product.findByPk(req.body.products[i].productId)
+        const precioUnitario = producto.price
+        const cantidad = req.body.products[i].quantity
+        const precioUnidades = precioUnitario * cantidad
+        coste = coste + precioUnidades
       }
+      if (coste > 10.0) {
+        newOrder.shippingCosts = 0.0
+        newOrder.price = coste
+      }
+      if (coste <= 10.0) {
+        const restaurant = await Restaurant.findByPk(req.body.restaurantId)
+        if (restaurant == null) {
+          res.statusz(404).send('No se ha encontrado el restaurante')
+        } else {
+          newOrder.shippingCosts = restaurant.shippingCosts
+          newOrder.price = coste + newOrder.shippingCosts
+        }
+      }
+      try {
+        newOrder = await newOrder.save()
+        newOrder.dataValues.products = []
+        for (let i = 0; i < req.body.products.length; i++) {
+          const producto = await Product.findByPk(req.body.products[i].productId)
+          const precioUnitario = producto.price
+          const cantidad = req.body.products[i].quantity
+          newOrder.dataValues.products.push({
+            id: req.body.products[i].productId,
+            quantity: cantidad,
+            priceUnit: precioUnitario
+          })
+        }
+        res.json(newOrder)
+        await t.commit()
+      } catch (err) {
+        if (err.name.includes('ValidationError')) {
+          res.status(422).send(err)
+        } else {
+          res.status(500).send(err)
+        }
+      }
+    } catch (error) {
+      t.rollback()
     }
   }
 }
+
 
 exports.confirm = async function (req, res) {
   const err = validationResult(req)
