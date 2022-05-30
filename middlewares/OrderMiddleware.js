@@ -25,11 +25,12 @@ const checkOrderOwnership = async (req, res, next) => {
 const checkOrderCustomer = async (req, res, next) => {
   try {
     const order = await Order.findByPk(req.params.orderId, {
+      attributes: ['userId']
     })
     if (req.user.id === order.userId) {
       return next()
     } else {
-      return res.status(403).send('Not enough privileges. This entity does not belong to you')
+      return res.status(403).send('Not enough privileges. This entity does not belong to you.')
     }
   } catch (err) {
     return res.status(404).send(err)

@@ -1,0 +1,56 @@
+[
+  {
+    "_id": "3ab313eb-49bf-46c6-983b-db57b84b201f",
+    "name": "DeliverUS",
+    "default": true,
+    "sortNum": 10000,
+    "created": "2021-07-24T16:26:46.306Z",
+    "modified": "2022-04-27T11:27:42.134Z",
+    "data": [
+      {
+        "name": "base_url",
+        "value": "http://localhost:3000"
+      },
+      {
+        "name": "token",
+        "value": "6bf5d8011be92c09397462d23ae566b3985957ff"
+      },
+      {
+        "name": "last_created_restaurant",
+        "value": "13"
+      },
+      {
+        "name": "last_created_order",
+        "value": 14
+      },
+      {
+        "name": "last_created_product",
+        "value": "1404"
+      },
+      {
+        "name": "customerToken",
+        "value": "129fd43cfbfa864f01d19cc75bb94d03a22d8f07"
+      },
+      {
+        "name": "customerEmail",
+        "value": "Bode.75715dbc6016@gmail.com"
+      },
+      {
+        "name": "customerPassword",
+        "value": "secret"
+      },
+      {
+        "name": "orderAddress",
+        "value": "Mi dirección nº1"
+      },
+      {
+        "name": "customerId",
+        "value": "5"
+      },
+      {
+        "name": "ownerToken",
+        "value": "3562d27277d10ce101d727f747bf5d6c568db43e"
+      }
+    ]
+  }
+]
