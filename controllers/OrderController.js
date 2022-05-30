@@ -4,6 +4,7 @@ const models = require('../models')
 const Order = models.Order
 const Product = models.Product
 const Restaurant = models.Restaurant
+const RestaurantCategory=models.RestaurantCategory
 const User = models.User
 const moment = require('moment')
 const { validationResult } = require('express-validator')

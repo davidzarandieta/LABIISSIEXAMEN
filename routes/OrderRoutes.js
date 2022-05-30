@@ -16,7 +16,7 @@ module.exports = (options) => {
     .patch(
       upload.none(),
       middlewares.isLoggedIn,
-      middlewares.hasRole('owner'),
+      middlewares.hasRole('customer'),
       middlewares.checkOrderOwnership,
       OrderValidation.confirm(),
       OrderController.confirm)
