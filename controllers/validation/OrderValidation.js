@@ -8,13 +8,44 @@ module.exports = {
     return [
       check('products')
         .custom((value, { req }) => {
-          
-         
+          // TODO: Check that the order includes some products (at least one) and each product quantity is greater than 0
+          const products = req.body.products
+          let todosMayorCero = true
+          for (const producto of products) {
+            if (producto.quantity <= 0) {
+              todosMayorCero = false
+            }
+          }
+          if (products.length > 0 && todosMayorCero) {
+            return true
+          } else return false
         })
         .withMessage('Order should have products, and all of them with quantity greater than zero'),
       check('products')
         .custom(async (value, { req }) => {
-         
+          const products = req.body.products.map(e => e.productId)
+          try {
+            const productosRestaurante = await Product.findAll({
+              model: Product,
+              as: 'products',
+              attributes: ['id'],
+              where: { restaurantId: req.body.restaurantId }
+            })
+            let todosSonDelRestaurante = true
+            const idsProductos = productosRestaurante.map(e => e.id)
+            for (const producto of products) {
+              if (!idsProductos.includes(producto)) {
+                todosSonDelRestaurante = false
+              }
+            }
+            if (todosSonDelRestaurante) {
+              return Promise.resolve('ok')
+            } else {
+              return Promise.reject(new Error('Los productos no son de ese restaurante'))
+            }
+          } catch (err) {
+            return Promise.reject(err)
+          }
         })
     ]
   },
