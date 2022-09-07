@@ -9,7 +9,6 @@ const User = models.User
 const moment = require('moment')
 const { validationResult } = require('express-validator')
 const { Op } = require('sequelize')
-const RestaurantCategory = models.RestaurantCategory
 
 const generateFilterWhereClauses = function (req) {
   const filterWhereClauses = []

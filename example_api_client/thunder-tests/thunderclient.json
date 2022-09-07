@@ -118,12 +118,12 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2021-07-25T08:18:17.295Z",
-    "modified": "2021-07-25T08:19:03.274Z",
+    "modified": "2022-09-05T16:10:43.313Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"email\": \"owner1@owner.com\",\n    \"password\": \"secret\"\n}",
+      "raw": "{\n    \"email\": \"Durgan.1460ff6d4095@thunderclient.com\",\n    \"password\": \"secret\"\n}",
       "form": []
     },
     "tests": [
@@ -589,7 +589,7 @@
     "method": "POST",
     "sortNum": 130000,
     "created": "2021-07-25T08:18:17.296Z",
-    "modified": "2021-08-04T15:07:05.127Z",
+    "modified": "2022-09-06T19:10:40.148Z",
     "headers": [],
     "params": [],
     "body": {
@@ -598,7 +598,7 @@
       "form": [
         {
           "name": "name",
-          "value": "Paella"
+          "value": "Paellitassss"
         },
         {
           "name": "description",
@@ -609,26 +609,36 @@
           "value": "5"
         },
         {
-          "name": "order",
-          "value": "4"
-        },
-        {
           "name": "availability",
           "value": "true"
         },
         {
+          "name": "proteins",
+          "value": "50"
+        },
+        {
+          "name": "fat",
+          "value": "30"
+        },
+        {
+          "name": "carbo",
+          "value": "20"
+        },
+        {
           "name": "restaurantId",
-          "value": "1"
+          "value": "5"
+        },
+        {
+          "name": "order",
+          "value": "0"
         },
         {
           "name": "productCategoryId",
-          "value": "4"
-        }
-      ],
-      "files": [
+          "value": "2"
+        },
         {
-          "name": "image",
-          "value": "../example_assets/paella.jpeg"
+          "name": "promoted",
+          "value": "true"
         }
       ]
     },

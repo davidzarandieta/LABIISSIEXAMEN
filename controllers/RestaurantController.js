@@ -6,17 +6,18 @@ const RestaurantCategory = models.RestaurantCategory
 const ProductCategory = models.ProductCategory
 const { validationResult } = require('express-validator')
 
+// SOLUTION
 exports.index = async function (req, res) {
   try {
     const restaurants = await Restaurant.findAll(
       {
-        attributes: ['id', 'name', 'description', 'address', 'postalCode', 'url', 'shippingCosts', 'averageServiceMinutes', 'email', 'phone', 'logo', 'heroImage', 'status', 'restaurantCategoryId'],
+        attributes: ['id', 'name', 'description', 'address', 'postalCode', 'url', 'shippingCosts', 'averageServiceMinutes', 'email', 'phone', 'logo', 'heroImage', 'promocional', 'status', 'restaurantCategoryId'],
         include:
       {
         model: RestaurantCategory,
         as: 'restaurantCategory'
       },
-        order: [[{ model: RestaurantCategory, as: 'restaurantCategory' }, 'name', 'ASC']]
+        order: [['promocional', 'DESC'], [{ model: RestaurantCategory, as: 'restaurantCategory' }, 'name', 'ASC']]
       }
     )
     res.json(restaurants)
@@ -25,12 +26,14 @@ exports.index = async function (req, res) {
   }
 }
 
+// SOLUTION
 exports.indexOwner = async function (req, res) {
   try {
     const restaurants = await Restaurant.findAll(
       {
-        attributes: ['id', 'name', 'description', 'address', 'postalCode', 'url', 'shippingCosts', 'averageServiceMinutes', 'email', 'phone', 'logo', 'heroImage', 'status', 'restaurantCategoryId'],
-        where: { userId: req.user.id }
+        where: { userId: req.user.id },
+        order: [['promocional', 'DESC']],
+        attributes: ['id', 'name', 'description', 'address', 'postalCode', 'url', 'shippingCosts', 'averageServiceMinutes', 'email', 'phone', 'logo', 'heroImage', 'promocional', 'status', 'restaurantCategoryId']
       })
     res.json(restaurants)
   } catch (err) {
@@ -74,7 +77,7 @@ exports.show = async function (req, res) {
       include: [{
         model: Product,
         as: 'products',
-        order: [['order', 'ASC']],
+        order: [['promoted', 'DESC']],
         include: { model: ProductCategory, as: 'productCategory' }
       },
       {

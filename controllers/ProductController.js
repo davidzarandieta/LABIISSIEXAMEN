@@ -10,9 +10,7 @@ const { validationResult } = require('express-validator')
 exports.indexRestaurant = async function (req, res) {
   try {
     const products = await Product.findAll({
-      where: {
-        restaurantId: req.params.restaurantId
-      }
+      where: {restaurantId: req.params.restaurantId},
     })
     res.json(products)
   } catch (err) {
@@ -27,6 +25,10 @@ exports.create = async function (req, res) {
     res.status(422).send(err)
   } else {
     let newProduct = Product.build(req.body)
+
+    // Solution
+    newProduct.calories = newProduct.fat * 9 + newProduct.proteins * 4 + newProduct.carbo * 4
+
     if (typeof req.file !== 'undefined') {
       newProduct.image = req.file.path
     }
@@ -51,6 +53,10 @@ exports.update = async function (req, res) {
     if (typeof req.file !== 'undefined') {
       req.body.image = req.file.path
     }
+
+    // Solution
+    req.body.calories = req.body.fat * 9 + req.body.proteins * 4 + req.body.carbo * 4
+
     try {
       await Product.update(req.body, { where: { id: req.params.productId } })
       const updatedProduct = await Product.findByPk(req.params.productId)

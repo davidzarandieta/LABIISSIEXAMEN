@@ -149,3 +149,5 @@ mysql.server start
 ```
 6. Run migrations and seeders. You can use the previously configured task by opening the command palette Command Palette (Ctrl+Shift+P or F1) `Tasks: run task` and select `Rebuild database`
 7. Run `npm start`
+#   L A B I I S S I E X A M E N  
+ 
